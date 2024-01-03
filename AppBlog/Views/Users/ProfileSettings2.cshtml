@@ -1,0 +1,97 @@
+@model UsersViewModel2
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+
+        <form asp-controller="Users"  asp-action="ProfileSettings2" method="post">
+        
+
+            <div  class="rounded shadow p-3 mb-5"  style="background-color: rgb(239, 241, 243);"> 
+            <div class="card-body d-flex align-items-center justify-content-center" id="image2" name="">
+               
+                <img id="image"asp-for="@Model.Image" style="max-width: 200px; max-height: 200px; min-width: 200px; min-height: 200px; border-radius:50%;"src="/Images/@Model.Image">
+            </div>
+            <label id="foto_kaldir" style="color: rgb(168, 198, 224);" class="mb-2 ">Fotoğrafı Kaldır</label>
+           
+            <div class="input-group mb-3">
+                <input type="file" class="form-control" id="file" name="file">
+                <button id="yukleButton" style="display:none;">Yükle</button>
+            </div>
+            <input type="hidden" id="UserID" asp-for="@Model.UserID" class="form-control">
+           
+            <div id="resultMessage"></div>
+
+</div>
+
+        </form>
+    </div>
+    <div class="col-2"></div>
+</div>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+    <script type="text/javascript">
+   
+        $(document).ready(function () {
+           $("#file").change(function () {
+            $("#yukleButton").show();
+        });
+            $("#yukleButton").click(function (e) {
+        
+                var formData = new FormData($('form')[0]);          
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: "/Users/ProfileSettings2",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (yorum) {
+                        if (yorum && yorum.success) {
+                            $("#image2").attr('src', '/Images/' + yorum.user.image);
+                        }
+                        else {
+                            alert(yorum.message);
+                        }
+
+                    }
+                    
+
+                });
+            });         
+
+            $("#foto_kaldir").click(function (e) {
+                $('#file').replaceWith($('#file').val('').clone(true));
+                var formData = new FormData($('form')[0]); 
+                formData.set("image","profil.jpeg");            
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    data:formData,
+                    url: "/Users/ProfileSettings2",                    
+                    contentType: false,
+                    processData: false,
+                    success: function (yorum) {
+                        if (yorum && yorum.success) {
+
+                            $("#image2").empty().append('<img style="max-width: 200px; max-height: 200px; min-width: 200px; min-height: 200px;  border-radius: 50%;" src="/Images/profil.jpeg" >');
+
+                        } else {
+                            $("#resultMessage").html('<p class="text-danger">Geçersiz veri formatı</p>');
+                        }
+                    },
+                    error: function () {
+                        alert("Fotoğraf güncelleme işlemi başarısız.");
+                    }
+
+                });
+
+
+
+            });
+
+        });
+
+    </script>
+
+}

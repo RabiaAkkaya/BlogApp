@@ -1,0 +1,178 @@
+@model List<Post>
+ 
+    <div class="row">
+        <div class="col-12" >
+            <h2 class="">Post Listesi</h2>        
+ <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width:200px">Image</th>
+                        <th>ID</th>                     
+                        <th>Başlık</th>
+                        <th>Aktif</th>
+                        <th style="width:125px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model)
+                    {
+                        @if(item.UserId !=1)
+                         {
+                        <tr>
+                            <td><img src="/Images/@item.Image" class="img-fluid"/></td>
+                            <td>@item.PostID</td>
+                             <td>@item.Title</td>                           
+                           
+                            <td>@item.IsActive</td>
+                            <td>                               
+                                
+                                @if(User.FindFirstValue(ClaimTypes.Role)=="admin")
+                                {
+                                    if(@item.UserId==int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                                    {
+                                      <a href="/Posts/Edit/@item.PostID" class="btn btn-sm btn-primary m-2 w-75">Düzenle</a>                                   
+                                
+                                    }
+                                 <a href="" class="btn btn-danger delete-button m-2 w-75"  data-post-id="@item.PostID">Sil</a><br>
+                                <div class="form-check m-2">
+                               <input class="form-check-input p-2"  
+                              data-post-id="@item.PostID" 
+                                 data-is-active="@item.IsActive" 
+                                type="checkbox" 
+                                asp-for="@item.IsActive" 
+                              onchange="updatePostStatus(this)">
+                                <label class="form-check-label">
+                                  Aktif
+                                </label>
+                             </div>
+                                }
+                                else{
+                                  <a href="/Posts/Edit/@item.PostID" class="btn btn-sm btn-primary m-2 w-75">Düzenle</a>                                   
+                                <a href="" class="btn btn-danger delete-button m-2 w-75"  data-post-id="@item.PostID">Sil</a><br>
+
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                    }
+                </tbody>
+            </table>
+              @if(User.FindFirstValue(ClaimTypes.Role)=="admin")
+             {
+                                   
+              <h2 class="">Postlarım</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width:200px">Image</th>
+                        <th>ID</th>                     
+                        <th>Başlık</th>
+                        <th>Aktif</th>
+                        <th style="width:125px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model)
+                    {
+                         if(@item.UserId==int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                                    {
+                            <div id="post">
+                                  <tr >
+                            <td><img src="/Images/@item.Image" class="img-fluid"/></td>
+                            <td>@item.PostID</td>
+                             <td>@item.Title</td>                           
+                           
+                            <td>@item.IsActive</td>
+                            <td> 
+                                <input type="hidden" name="PostID" id="PostID" value="@item.PostID">
+                                <a href="/Posts/Edit/@item.PostID" class="btn btn-sm btn-primary m-2 w-75">Düzenle</a>                                   
+                                <a href="" class="btn btn-danger delete-button m-2 w-75"  data-post-id="@item.PostID">Sil</a><br>
+                                                                
+                              <div class="form-check m-2">
+                               <input class="form-check-input p-2"  
+                              data-post-id="@item.PostID" 
+                                 data-is-active="@item.IsActive" 
+                                type="checkbox" 
+                                asp-for="@item.IsActive" 
+                              onchange="updatePostStatus(this)">
+                                <label class="form-check-label">
+                                  Aktif
+                                </label>
+                             </div>
+
+                                                         
+                                
+                            </td>
+                        </tr>
+                        </div>
+                        }
+                    }
+                    
+
+                </tbody>
+            </table>
+            }
+        </div>
+    </div>
+       @section Scripts{
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>         
+         
+       <script type="text/javascript">
+    $(document).ready(function() {
+        $('.delete-button').click(function(e) {
+            e.preventDefault(); // Varsayılan tıklama davranışını engelle
+            
+            var postID = $(this).data('post-id'); // data-post-id özelliğinden post ID'sini al
+            var confirmation = confirm("Bu gönderiyi silmek istediğinizden emin misiniz?");
+
+            if (confirmation) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Posts/RemovePost", // RemovePost action'ının bulunduğu controller'ın adını belirtin
+                    data: { PostID: postID },
+                    success: function (result) {
+                        if (result.success) {
+                            alert("Post başarıyla silindi.");
+                           location.reload();
+                        } else {
+                            alert("Silme işlemi başarısız. Hata: " + result.error);
+                        }
+                    },
+                    error: function () {
+                        alert("Bir hata oluştu.");
+                    }
+                });
+            }
+        });
+      
+    });
+     function updatePostStatus(checkbox) {
+    var postID = $(checkbox).data('post-id');
+    var isActive = $(checkbox).data('is-active');
+
+    $.ajax({
+        type: "POST",
+        url: "/Posts/UpdatePostStatus",
+        data: { PostID: postID, IsActive: isActive },
+        success:  function (result) {
+                        if (result.success) {
+                            alert("Aktiflik güncelleme başarılı!");
+                           location.reload();
+                        } else {
+                            alert("Aktiflik güncelleme işlemi başarısız. Hata: " + result.error);
+                        }
+                    },
+                    
+        error: function(xhr, textStatus, errorThrown) {
+            alert("AJAX hatası: " + textStatus + ", Hata: " + (xhr.responseText || "Bilinmeyen hata"));
+        }
+    });
+}
+
+</script>
+         
+         
+         
+   
+           }   

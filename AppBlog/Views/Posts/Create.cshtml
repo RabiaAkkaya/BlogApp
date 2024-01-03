@@ -1,0 +1,49 @@
+@model PostCreateViewModel
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">           
+   
+    <h1 class="h3 mt-5 mb-3 fw-normal">Post Ekle</h1>
+    <form asp-controller="Posts" asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-floating">
+      <input asp-for="Title" class="form-control mb-2">
+      <label for="Title">Başlık</label>
+      <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-floating">
+      <input asp-for="Description" class="form-control mb-3">
+      <label for="Description">Açıklama</label>
+      <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+     <div class="form-floating">
+      <input asp-for="Url" class="form-control mb-3">
+      <label for="Url">Url</label>
+      <span asp-validation-for="Url" class="text-danger"></span>
+    </div>
+     <div class="form-floating">
+      <input asp-for="Content" class="form-control mb-3">      
+      <span asp-validation-for="Content" class="text-danger"></span>
+    </div>
+    
+  
+    <button class="btn btn-primary w-100 py-2" type="submit">Ekle</button>
+      
+    <p class="mt-5 mb-3 text-body-secondary">©2023</p>
+
+        </form>
+  </div>
+    
+    <div class="col-3"></div>
+
+</div>
+@section Scripts{
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.0/tinymce.min.js" integrity="sha512-SOoMq8xVzqCe9ltHFsl/NBPYTXbFSZI6djTMcgG/haIFHiJpsvTQn0KDCEv8wWJFu/cikwKJ4t2v1KbxiDntCg==" 
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    tinymce.init({
+        selector:'#Content'
+    });
+</script>
+
+}

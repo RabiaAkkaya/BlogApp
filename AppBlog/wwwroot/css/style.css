@@ -1,0 +1,15 @@
+body{
+    background-color:azure;
+}
+a{
+    text-decoration: none;
+}
+.avatar
+{
+    width: 100px;
+    height: 100px;
+}
+.custom-border {
+    border: 2px solid #d1c6c6; /* 2 piksel kalınlığında koyu gri kenarlık */
+    padding: 10px; /* İçerikten kenarlığa biraz boşluk ekler */
+}

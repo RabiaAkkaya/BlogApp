@@ -1,0 +1,61 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\R & S AKKAYA\\Desktop\\AppBlog\\AppBlog\\wwwroot\\Images\\1.png",
+      "PackagePath": "staticwebassets\\Images\\1.png"
+    },
+    {
+      "Id": "C:\\Users\\R & S AKKAYA\\Desktop\\AppBlog\\AppBlog\\wwwroot\\Images\\2.png",
+      "PackagePath": "staticwebassets\\Images\\2.png"
+    },
+    {
+      "Id": "C:\\Users\\R & S AKKAYA\\Desktop\\AppBlog\\AppBlog\\wwwroot\\Images\\profil.jpeg",
+      "PackagePath": "staticwebassets\\Images\\profil.jpeg"
+    },
+    {
+      "Id": "C:\\Users\\R & S AKKAYA\\Desktop\\AppBlog\\AppBlog\\wwwroot\\Images\\your_fixed_image_name.jpeg",
+      "PackagePath": "staticwebassets\\Images\\your_fixed_image_name.jpeg"
+    },
+    {
+      "Id": "C:\\Users\\R & S AKKAYA\\Desktop\\AppBlog\\AppBlog\\wwwroot\\css\\style.css",
+      "PackagePath": "staticwebassets\\css\\style.css"
+    },
+    {
+      "Id": "C:\\Users\\R & S AKKAYA\\Desktop\\AppBlog\\AppBlog\\wwwroot\\lib\\bootstrap-icons\\font\\bootstrap-icons.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap-icons\\font\\bootstrap-icons.css"
+    },
+    {
+      "Id": "C:\\Users\\R & S AKKAYA\\Desktop\\AppBlog\\AppBlog\\wwwroot\\lib\\bootstrap-icons\\font\\bootstrap-icons.json",
+      "PackagePath": "staticwebassets\\lib\\bootstrap-icons\\font\\bootstrap-icons.json"
+    },
+    {
+      "Id": "C:\\Users\\R & S AKKAYA\\Desktop\\AppBlog\\AppBlog\\wwwroot\\lib\\bootstrap-icons\\font\\bootstrap-icons.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap-icons\\font\\bootstrap-icons.min.css"
+    },
+    {
+      "Id": "C:\\Users\\R & S AKKAYA\\Desktop\\AppBlog\\AppBlog\\wwwroot\\lib\\bootstrap-icons\\font\\fonts\\bootstrap-icons.woff",
+      "PackagePath": "staticwebassets\\lib\\bootstrap-icons\\font\\fonts\\bootstrap-icons.woff"
+    },
+    {
+      "Id": "C:\\Users\\R & S AKKAYA\\Desktop\\AppBlog\\AppBlog\\wwwroot\\lib\\bootstrap-icons\\font\\fonts\\bootstrap-icons.woff2",
+      "PackagePath": "staticwebassets\\lib\\bootstrap-icons\\font\\fonts\\bootstrap-icons.woff2"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.AppBlog.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.AppBlog.props",
+      "PackagePath": "build\\AppBlog.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.AppBlog.props",
+      "PackagePath": "buildMultiTargeting\\AppBlog.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.AppBlog.props",
+      "PackagePath": "buildTransitive\\AppBlog.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

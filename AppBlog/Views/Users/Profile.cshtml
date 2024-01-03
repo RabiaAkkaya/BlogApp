@@ -1,0 +1,42 @@
+@model User
+<div class="row">
+    <div class="col-md-4">
+        <div class="class bg-white p-2">
+          <img style="width:250px" src="/Images/@Model.Image" class="imag-fluid mx-2"/>
+        </div>
+
+    </div>
+    
+    <div class="col-md-8">
+        <div class="class bg-white p-2">
+             <h5>@Model.Name</h5>
+           <hr> 
+           <div id="posts">
+            <h5 class="my-4">Yayınlanan Gönderiler</h5>
+            <ul class="list-group">
+                @foreach(var post in Model.Posts)
+                {
+    
+                <li class="list-group-item"><i class="bi bi-caret-right-fill"></i><a href="/posts/details/@post.url">@post.Title</a></li>
+               
+                   
+                }
+                 <div class="card p-3 mt-5" id="comments">
+
+                  <h3>Yorumlar</h3>
+                  @foreach(var comments in Model.Comments)
+                  {
+                    <div class="card p-3 border border-info-subtle m-3" id="comments">                   
+                    <a href="/posts/details/@comments.Post.url"><h5>@comments.Post.Title</h5></a>
+                    <hr>
+                    <p>@comments.Text</p>
+                    </div>
+                  }
+               </div>
+            </ul>
+           </div>
+           
+        </div>
+    </div>
+
+</div>

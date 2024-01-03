@@ -1,0 +1,64 @@
+@model UsersViewModel
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+
+        <form asp-controller="Users" enctype="multipart/form-data" asp-action="ProfileSettings" method="post">
+        
+           <a href="/Users/ProfileSettings2"> <label id="foto_kaldir" style="color: rgb(168, 198, 224);" class="mb-2 ">Profil resmini güncelle</label></a> 
+            <input type="hidden" id="UserID" asp-for="@Model.UserID" class="form-control">         
+
+            <input type="text" id="Name" asp-for="@Model.Name" class="form-control mb-2 mt-2">
+            <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            <input type="text" id="UserName"asp-for="@Model.UserName" class="form-control mb-2 mt-2">
+            <span asp-validation-for="@Model.UserName" class="text-danger"></span>
+            <input type="email" id="Mail" asp-for="@Model.Mail" class="form-control mb-2 mt-2">
+            <span asp-validation-for="@Model.Mail" class="text-danger"></span>
+            <a href="#">
+                <p>Şifre Değiştir</p>
+            </a>
+            <button class="btn btn-primary w-100 py-2" id="submit" type="submit">Uygula</button>
+
+            <div id="resultMessage"></div>
+
+
+        </form>
+    </div>
+    <div class="col-2"></div>
+</div>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+    <script type="text/javascript">
+   
+        $(document).ready(function () {
+             $("#submit").click(function (e) {
+                var formData = new FormData($('form')[0]);    
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: "/Users/ProfileSettings",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                         console.log("Ajax success:", response);
+                        if (response.success) {
+                            $("#resultMessage").html('<p class="text-success">Güncelleme Başarılı!</p>');
+                        } else {
+                            $("#resultMessage").html('<p class="text-danger">Güncelleme Başarısız!</p>');
+                        }
+                    },
+                    error: function () {
+                        console.error("Ajax error:", error);
+                        $("#resultMessage").html('<p class="text-danger">İşlem sırasında bir hata oluştu.</p>');
+                    }
+                });
+            });
+          
+
+        });
+
+    </script>
+
+}

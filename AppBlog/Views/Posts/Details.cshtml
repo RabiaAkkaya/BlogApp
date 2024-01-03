@@ -1,0 +1,163 @@
+@model Post
+    <div class="row">
+     <div class="col-lg-8">
+        <div class="bg-white p-4">
+            <h1 class="h-4 mb-4">@Model.Title</h1>
+            <div class="tags"> 
+                @foreach(var tag in Model.Tags)
+                {
+                    <a href="/posts/tag/@tag.url" class="badge bg-@tag.Color bg-opacity-10 text-@tag.Color mb-2 fw-bold">@tag.Text</a>
+                }
+            </div>
+           <img src="~/Images/@Model.Image" class="img-fluid rounded" alt="">
+             <ul class="class list-inline my-3">
+                                <li class="list-inline-item "><i class="bi bi-calendar-event"></i>  @Model.PublishedOn.ToString("d")</li>
+                                <li class="list-inline-item"><i class="bi bi-person-circle mx-3"></i><a href="/user/@Model.User.UserName">@Model.User.UserName</a></li>
+
+             </ul>
+             <hr>
+           <div>@Html.Raw(@Model.Content)</div>
+            <div class="bg-white mt-3">
+                <div class="card border-0">
+                    <div class="card-header pb-0">
+                      <h4> <span id="count">@Model.Comments.Count()</span> adet yorum</h4> 
+                     <div class="card-body">
+                        <div id="comments" >
+                         @foreach(var comment in Model.Comments)
+                        {  
+                        
+                        <p class="list-inline-item"> @comment.PublishedOn.ToString("dd-MM-yyyy  hh:mm")</p>
+                                
+                        
+                     <img src="/Images/@comment.User.Image" alt="" class="avatar rounded-circle float-start me-3">
+
+                       <div class="mb-2 ">
+                      <input type="hidden" name="CommentID" id="CommentID" value="@comment.CommentID">
+                     <a href="/user/@comment.User.UserName"><h6>@comment.User.UserName</h6> </a>                       
+
+                       </div>
+                       <p>@comment.Text</p> 
+                       @if(User.Identity.Name==comment.User.UserName)
+                     {
+         
+                      <div class="row">
+                        <div class="col-10"></div>
+                      <div class="col-2"><a href="#" class="delete-button" data-comment-id="@comment.CommentID">Sil</a></div>                 
+                      </div>
+                     
+                     }      
+                                            
+                   }
+                        </div>
+                        @if(User.Identity.IsAuthenticated)
+                        {
+                        <hr class="my-4">                   
+                        <div>
+                            <h4>Yorum Ekle</h4>
+                            <form action="/posts/AddComment" method="post">
+                            <input type="hidden" name="PostID" id="PostID" value="@Model.PostID">                        
+                             <div class="col-md-12">                              
+                                <textarea type="text" name="text" id="text"  rows="3" class="form-control"></textarea>
+                                <div class="col-md-12">
+                                    <button type="submit" id="btnYorumKayit"class="btn btn-primary mt-3">Yorum Ekle</button>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                        }
+                        else{
+                            <p>Yorum için giriş yapmalısınız.</p>
+                        }
+                      
+                     </div>
+                       
+                    </div>
+                </div>
+            </div>      
+         
+        </div>
+    </div>
+     <div class="col-lg-4 bg-white">
+     <vc:tags-menu></vc:tags-menu>   
+     <vc:new-post></vc:new-post>   
+     </div>
+      </div>  
+           @section Scripts{
+          <script src="https://code.jquery.com/jquery-3.7.1.js" 
+          integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+          <script type="text/javascript">
+         $(document).ready(function() {
+         var comment= @Model.Comments.Count();
+         var CommentDeleteByID=comment+1;
+    $("#btnYorumKayit").click(function() {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AddComment")',
+            dataType: 'json',
+            data: {
+                PostID: $('#PostID').val(),
+                Name: $('#Name').val(),
+                Text: $('#text').val()      
+         
+            },           
+            success:function(yorum) { //post başarılı olduğu halde bu div e uygula
+           //yorum.(noktadan sonraki bütün alan isimleri küçük harfle başlamalı)
+            location.reload();
+                $("#comments").append( `
+                <div class="my-4 custom-border">
+                        <img src="/Images/${yorum.avatar}" alt="" class="avatar rounded-circle float-start me-3">
+                       <div class="mb-2 ">
+                        <h6>${yorum.Name}</h6>
+                        <small>${yorum.publishedOn}</small>
+                       </div>
+                       <p>${yorum.text}</p>
+                       <div class="row">
+                        <div class="col-10"></div>
+                      <div class="col-2"><a href="#" class="delete-button" data-comment-id=${yorum.CommentID}>Sil</a></div>                 
+                      </div>
+                       </div> 
+                `);
+                $("#Name").val('');
+                $("#text").val('');
+               var adet=parseInt($("#count").text());
+               $("#count").text(adet+1);
+                
+            }
+        
+        });
+        return false; // To prevent the default form submission
+    });
+  $("#comments").on("click", ".delete-button", function () {
+                var commentId = $(this).data("comment-id");
+
+      if (confirm("Bu yorumu silmek istediğinize emin misiniz?")) {
+        // Silme işlemi başlat       
+        $.ajax({
+                        type: "POST", // Silme işlemi POST isteği ile gerçekleştiriliyor
+                        url: '/Posts/RemoveComment',
+                        data: { CommentID: commentId },
+                        dataType: 'json',
+           success: function() {          
+                        alert("Yorum başarıyla silindi.");
+                        // İsterseniz sayfayı yeniden yükleyebilirsiniz.
+                        location.reload();
+                    },
+                    error: function() {
+                        alert("Silme işlemi başarısız.");
+                    }
+        
+        });
+    
+    }
+ 
+ 
+});
+         });  
+               </script>  
+           }   
+          
+            
+
+           
+       
+    
